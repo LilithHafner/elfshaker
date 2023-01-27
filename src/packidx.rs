@@ -121,7 +121,9 @@ pub struct FileHandle {
 }
 
 #[derive(Serialize, Deserialize, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
-pub struct FileMetadata {}
+pub struct FileMetadata {
+    pub mode: u32,
+}
 
 impl Eq for FileHandle {}
 
