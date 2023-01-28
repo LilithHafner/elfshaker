@@ -595,6 +595,7 @@ impl Repository {
                     offset: LOOSE_OBJECT_OFFSET,
                     size: buf.len() as u64,
                 },
+                None,
             ))
         })
         .into_iter()
@@ -1344,8 +1345,8 @@ mod tests {
         let path = "/path/to/A";
         let old_checksum = [0; 20];
         let new_checksum = [1; 20];
-        let old_entries = [FileEntry::new(path.into(), old_checksum, EXAMPLE_MD)];
-        let new_entries = [FileEntry::new(path.into(), new_checksum, EXAMPLE_MD)];
+        let old_entries = [FileEntry::new(path.into(), old_checksum, EXAMPLE_MD, None)];
+        let new_entries = [FileEntry::new(path.into(), new_checksum, EXAMPLE_MD, None)];
         let (added, removed) = Repository::compute_entry_diff(&old_entries, &new_entries);
         assert_eq!(1, added.len());
         assert_eq!(path, added[0].path);
@@ -1361,13 +1362,14 @@ mod tests {
         let path_b_old_checksum = [0; 20];
         let path_a_new_checksum = [1; 20];
         let old_entries = [
-            FileEntry::new(path_a.into(), path_a_old_checksum, EXAMPLE_MD),
-            FileEntry::new(path_b.into(), path_b_old_checksum, EXAMPLE_MD),
+            FileEntry::new(path_a.into(), path_a_old_checksum, EXAMPLE_MD, None),
+            FileEntry::new(path_b.into(), path_b_old_checksum, EXAMPLE_MD, None),
         ];
         let new_entries = [FileEntry::new(
             path_a.into(),
             path_a_new_checksum,
             EXAMPLE_MD,
+            None,
         )];
         let (added, removed) = Repository::compute_entry_diff(&old_entries, &new_entries);
         assert_eq!(1, added.len());
@@ -1386,12 +1388,12 @@ mod tests {
         let path_b_old_checksum = [1; 20];
         let path_b_new_checksum = [0; 20];
         let old_entries = [
-            FileEntry::new(path_a.into(), path_a_old_checksum, EXAMPLE_MD),
-            FileEntry::new(path_b.into(), path_b_old_checksum, EXAMPLE_MD),
+            FileEntry::new(path_a.into(), path_a_old_checksum, EXAMPLE_MD, None),
+            FileEntry::new(path_b.into(), path_b_old_checksum, EXAMPLE_MD, None),
         ];
         let new_entries = [
-            FileEntry::new(path_a.into(), path_a_new_checksum, EXAMPLE_MD),
-            FileEntry::new(path_b.into(), path_b_new_checksum, EXAMPLE_MD),
+            FileEntry::new(path_a.into(), path_a_new_checksum, EXAMPLE_MD, None),
+            FileEntry::new(path_b.into(), path_b_new_checksum, EXAMPLE_MD, None),
         ];
         let (added, removed) = Repository::compute_entry_diff(&old_entries, &new_entries);
         assert_eq!(2, added.len());
