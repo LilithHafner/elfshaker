@@ -549,6 +549,9 @@ impl PackIndex {
         let mut hasher = entries.into_iter().fold(Sha1::new(), |mut hasher, entry| {
             hasher.input(&os_str_as_bytes(entry.path));
             hasher.input(entry.checksum);
+            if let Some(md) = entry.file_metadata {
+                hasher.input(&md.mode.to_be_bytes());
+            };
             hasher
         });
         let mut checksum: ObjectChecksum = [0; 20];
